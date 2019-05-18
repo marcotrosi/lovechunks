@@ -16,3 +16,8 @@ The beginnings of a Sudoku game or Sudoku solving helper or Sudoku solver. Not s
 
 ![shifted screenshot](https://github.com/marcotrosi/LoveChunks/blob/master/solvdoku.png "solvdoku")
 
+## wclock
+A german word clock.
+
+![wclock screenshot](https://github.com/marcotrosi/LoveChunks/blob/master/wclock.png "wclock")
+
