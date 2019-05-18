@@ -16,13 +16,39 @@ TODO
 
 local sd = require "solvdoku"
 
+local LEFT_KEY = {["left"] = true, ["h"] = true}
+local RIGHT_KEY = {["right"] = true, ["l"] = true}
+local UP_KEY = {["up"] = true, ["k"] = true}
+local DOWN_KEY = {["down"] = true, ["j"] = true}
+
+local N_KEYS = {
+   ["1"] = true,
+   ["2"] = true,
+   ["3"] = true,
+   ["4"] = true,
+   ["5"] = true,
+   ["6"] = true,
+   ["7"] = true,
+   ["8"] = true,
+   ["9"] = true,
+   ["0"] = true,
+   ["space"] = true,
+}
+
+local ShowReminder = true
+local AutoFill     = false
+local SelectedY = nil
+local SelectedX = nil
+
+local input_source = { Selected = 1 }
+local state = { complete = false, data = {} }
 
 function getBoxPosX(i) -- <<<
-   return OffsetX+( ((i-1)%9) * Size)
+   return OffsetX + ((i-1)%9) * Size
 end -- >>>
 
 function getBoxPosY(i) -- <<<
-   return OffsetY+( math.floor((i-1)/9) * Size)
+   return OffsetY + (math.floor((i-1)/9) * Size)
 end -- >>>
 
 function updateData(GuiData, GameData) -- <<<
@@ -35,29 +61,29 @@ function updateData(GuiData, GameData) -- <<<
    FontHeight    = math.floor(Size*0.4)
    Font          = love.graphics.newFont("GeosansLight.ttf", FontHeight)
 
-   XA = OffsetX+(3*Size)
-   XB = OffsetX+(6*Size)
-   XC = OffsetX+(9*Size)
-   YA = OffsetY+(3*Size)
-   YB = OffsetY+(6*Size)
-   YC = OffsetY+(9*Size)
+   XA = OffsetX + (3 * Size)
+   XB = OffsetX + (6 * Size)
+   XC = OffsetX + (9 * Size)
+   YA = OffsetY + (3 * Size)
+   YB = OffsetY + (6 * Size)
+   YC = OffsetY + (9 * Size)
 
    ReminderFontHeight = math.floor(Size/9)
    ReminderFont       = love.graphics.newFont("GeosansLight.ttf", ReminderFontHeight)
 
    for i,v in ipairs(GameData) do
-      GuiData[i].x = getBoxPosX(i)
-      GuiData[i].y = getBoxPosY(i)
-      GuiData[i].nx= getBoxPosX(i) + Size/2 - Font:getWidth('0')/2
-      GuiData[i].ny= getBoxPosY(i) + Size/2 - FontHeight/2
+      GuiData[i].x  = getBoxPosX(i)
+      GuiData[i].y  = getBoxPosY(i)
+      GuiData[i].nx = getBoxPosX(i) + Size/2 - Font:getWidth('0')/2
+      GuiData[i].ny = getBoxPosY(i) + Size/2 - FontHeight/2
    end
 
    collectgarbage()
 end -- >>>
 
 function updateSelected() -- <<<
-   SelectedX = getBoxPosX(Selected)
-   SelectedY = getBoxPosY(Selected)
+   SelectedX = getBoxPosX(input_source.Selected)
+   SelectedY = getBoxPosY(input_source.Selected)
 end -- >>>
 
 function drawBox(t) -- <<<
@@ -84,7 +110,7 @@ function love.load() -- <<<
    love.graphics.setLineStyle("smooth")
    love.keyboard.setKeyRepeat(true)
 
-   Data = -- <<<
+   state.data = -- <<<
    {
       { x = 0, y = 0, nx= 0, ny= 0, d=sd.GameData[1] , },
       { x = 0, y = 0, nx= 0, ny= 0, d=sd.GameData[2] , },
@@ -169,91 +195,69 @@ function love.load() -- <<<
       { x = 0, y = 0, nx= 0, ny= 0, d=sd.GameData[81], },
    } -- >>>
 
-   Selected      = 1
-   ShowReminder  = true
-   IsComplete    = false
-   AutoFill      = false
-
-   updateData(Data, sd.GameData)
+   updateData(state.data, sd.GameData)
    updateSelected()
 
 end -- >>>
 
 function love.keypressed(key, sc, isrepeat) -- <<<
+   if key == "q" then
+      love.event.quit()
+   end
 
-   if not IsComplete then
-
-      if (key == "left") or (key == "h") then
-         if Selected == 1 then
-            return
+   if N_KEYS[key] and not state.complete then
+      if sd.setValue(input_source.Selected, tonumber(key) or 0) then
+         if AutoFill then
+            while sd.autoFill() do end
          end
-         Selected = Selected - 1
-         updateSelected()
-         return
-      end
 
-      if (key == "right") or (key == "l")  then
-         if Selected == 81 then
-            return
-         end
-         Selected = Selected + 1
-         updateSelected()
-      end
-
-      if (key == "up") or (key == "k")  then
-         if (Selected >= 1) and (Selected <= 9) then
-            return
-         end
-         Selected = Selected - 9
-         updateSelected()
-         return
-      end
-
-      if (key == "down") or (key == "j")  then
-         if (Selected >= 73) and (Selected <= 81) then
-            return
-         end
-         Selected = Selected + 9
-         updateSelected()
-         return
+         state.complete = sd.isComplete()
       end
    end
 
-   if not isrepeat then
+   if not state.complete then
 
-      if key == "q" then
-         love.event.quit()
+      if LEFT_KEY[key] then
+         if input_source.Selected ~= 1 then
+            input_source.Selected = input_source.Selected - 1
+         end
+      elseif RIGHT_KEY[key] then
+         if input_source.Selected ~= 81 then
+            input_source.Selected = input_source.Selected + 1
+         end
+      elseif UP_KEY[key]  then
+         if not (
+            (input_source.Selected >= 1) and
+            (input_source.Selected <= 9)
+         ) then
+            input_source.Selected = input_source.Selected - 9
+         end
+      elseif DOWN_KEY[key]  then
+         if not (
+            (input_source.Selected >= 73) and
+            (input_source.Selected <= 81)
+         ) then
+            input_source.Selected = input_source.Selected + 9
+         end
       end
 
-      if not IsComplete then
+      updateSelected()
+   elseif not isrepeat and not state.complete then
+      if key == "r" then
+         ShowReminder = not ShowReminder
 
-         if key == "r" then
-            ShowReminder = not ShowReminder
-         end
+      elseif key == "a" then
+         AutoFill = not AutoFill
 
-         if key == "a" then
-            AutoFill = not AutoFill
-            if AutoFill then
-               while sd.autoFill() do end
-               IsComplete = sd.isComplete()
-            end
-         end
-
-         if key == "f" then
+         if AutoFill then
             while sd.autoFill() do end
-            IsComplete = sd.isComplete()
          end
 
-         if (key == "1") or (key == "2") or (key == "3") or (key == "4") or (key == "5") or (key == "6") 
-         or (key == "7") or (key == "8") or (key == "9")  or (key == "0")  or (key == "space") then
-            if sd.setValue(Selected, tonumber(key) or 0) then
-               if AutoFill then
-                  while sd.autoFill() do end
-               end
-               IsComplete = sd.isComplete()
-            end
-         end
+      elseif key == "f" then
+         while sd.autoFill() do end
       end
+
+      state.complete = sd.isComplete()
    end
 
 end -- >>>
@@ -265,7 +269,7 @@ end -- >>>
 -- end -- >>>
 
 function love.resize(w, h) -- <<<
-   updateData(Data, sd.GameData)
+   updateData(state.data, sd.GameData)
    updateSelected()
 end -- >>>
 
@@ -286,24 +290,24 @@ function love.draw() -- <<<
 
    g.setLineWidth(1)
    g.setColor(0,0,0)
-   for _,v in ipairs(Data) do
+
+   for _,v in ipairs(state.data) do
       drawBox(v)
    end
 
-   if not IsComplete then
+   if not state.complete then
       g.setColor(0,0,0)
-   else
-      g.setColor(0,0,1)
-   end
+   else g.setColor(0,0,1) end
+
    g.setLineWidth(3)
    g.rectangle("line", OffsetX, OffsetY, BoardSize, BoardSize)
-   g.line( XA      , OffsetY , XA , YC)
-   g.line( XB      , OffsetY , XB , YC)
-   g.line( OffsetX , YA      , XC , YA)
-   g.line( OffsetX , YB      , XC , YB)
+   g.line(XA, OffsetY, XA, YC)
+   g.line(XB, OffsetY, XB, YC)
+   g.line(OffsetX, YA, XC, YA)
+   g.line(OffsetX, YB, XC, YB)
 
-   if not IsComplete then
-      g.setColor(1,0,0)
+   if not state.complete then
+      g.setColor(1, 0, 0)
       g.rectangle("line", SelectedX, SelectedY, Size, Size)
    end
 end -- >>>
