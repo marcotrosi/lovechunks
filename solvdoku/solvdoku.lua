@@ -265,14 +265,15 @@ function getLastPossibleValue(i) -- <<<
 end -- >>>
 
 function autoFill() -- <<<
+   local Return = false
    for i,v in ipairs(GameData) do
       local Value = getLastPossibleValue(i)
       if Value then
          setValue(i, Value)
-         return true
+         Return = true
       end
    end
-   return false
+   return Return
 end -- >>>
 
 return
