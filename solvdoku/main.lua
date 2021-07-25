@@ -13,7 +13,6 @@ TODO
    - fit reminder flags to box
    - try to reduce CPU usage
    - c to clear all fields
-   - highlight autofill mode
    - fix black screen issue after startup
 --]]
 
@@ -330,7 +329,11 @@ function love.draw() -- <<<
 
    local g = love.graphics
 
-   g.setBackgroundColor(1, 1, 1)
+   if AutoFill then
+      g.setBackgroundColor(1, 0.8, 0.8)
+   else
+      g.setBackgroundColor(1, 1, 1)
+   end
 
    g.setLineWidth(1)
    g.setColor(0,0,0)
