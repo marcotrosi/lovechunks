@@ -265,7 +265,10 @@ function getLastPossibleValue(i) -- <<<
 end -- >>>
 
 function autoFill() -- <<<
+
    local Return = false
+
+   -- iterate cells
    for i,v in ipairs(GameData) do
       local Value = getLastPossibleValue(i)
       if Value then
@@ -273,6 +276,27 @@ function autoFill() -- <<<
          Return = true
       end
    end
+
+   -- iterate fields, rows and cols
+   for _,t in ipairs({Fields, Rows, Columns}) do
+      for n=1,9 do
+         for _,x in ipairs(t) do
+            local nList = {}
+            for _,c in ipairs(x) do
+               if GameData[c].value_n == 0 then
+                  if GameData[c][n] then
+                     table.insert(nList,c)
+                  end
+               end
+            end
+            if #nList == 1 then
+               setValue(nList[1], n)
+               Return = true
+            end
+         end
+      end
+   end
+
    return Return
 end -- >>>
 

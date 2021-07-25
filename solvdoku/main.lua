@@ -12,6 +12,9 @@ TODO
    - mouse support
    - fit reminder flags to box
    - try to reduce CPU usage
+   - c to clear all fields
+   - highlight autofill mode
+   - fix black screen issue after startup
 --]]
 
 local sd = require "solvdoku"
