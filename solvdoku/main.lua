@@ -327,6 +327,8 @@ end -- >>>
 
 function love.draw() -- <<<
 
+	-- love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+
    local g = love.graphics
 
    if AutoFill then
@@ -357,7 +359,6 @@ function love.draw() -- <<<
       g.setColor(1,0,0)
       g.rectangle("line", SelectedX, SelectedY, Size, Size)
    end
-   -- DrawIt=false
 end -- >>>
 
 -- vim: fmr=<<<,>>> fdm=marker
