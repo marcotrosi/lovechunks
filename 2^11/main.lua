@@ -42,6 +42,15 @@ function combineFields() -- <<<
             if Data[row][col] == Data[row][col+1] then
                Data[row][col] = Data[row][col] + 1
                Data[row][col+1] = 0
+
+               if SquareTexts[Data[row][col]] == nil then -- add new text
+                  SquareTexts[Data[row][col]] = love.graphics.newText(Font, tostring(2^(Data[row][col]-1)) )
+               end
+
+               if SquareColors[Data[row][col]] == nil then -- add new color
+                  SquareColors[Data[row][col]] = SquareColors[Data[row][col]-12] -- currently cycle TODO think about changing to a nicer algorithm with less repitition
+               end
+
             end
          end
       end
@@ -167,10 +176,11 @@ function love.load() -- <<<
    --]]
 
    --[[
+   -- comment out and use for testing
    Data = {
       {1,2,3,4},
       {5,6,7,8},
-      {9,10,11,12},
+      {9,10,12,12},
       {0,0,0,0},
    }
    --]]
@@ -206,6 +216,7 @@ function love.load() -- <<<
    BackColor = {love.math.colorFromBytes(252, 244, 234)} --  #FCF4EA
    TextColor = {love.math.colorFromBytes(250, 237, 212)} --  #FAEDD4
    FrameColor= {love.math.colorFromBytes(127, 119, 111)} --  #7F776F
+
    SquareColors = {
 [0] = {love.math.colorFromBytes(189, 175, 164)}, -- #BDAFA4 empty
       {love.math.colorFromBytes(80 , 129, 142)}, -- #50818E 1  
@@ -220,6 +231,7 @@ function love.load() -- <<<
       {love.math.colorFromBytes(73 , 86 , 141)}, -- #49568D 512
       {love.math.colorFromBytes(215, 167, 65 )}, -- #D7A741 1024
       {love.math.colorFromBytes(51 , 51 , 51 )}, -- #333333 2048
+      -- combineFields() will add more
    }
 
    SquareTexts = {
@@ -236,6 +248,7 @@ function love.load() -- <<<
       love.graphics.newText(Font,"512"),
       love.graphics.newText(Font,"1024"),
       love.graphics.newText(Font,"2048"),
+      -- combineFields() will add more
    }
 
    MenuText     = love.graphics.newText(Font,"[P]LAY\n[Q]UIT")
