@@ -69,7 +69,14 @@ function equalData() -- <<<
 end -- >>>
 
 function copyData() -- <<<
-   DataCopy[1][1],DataCopy[1][2],DataCopy[1][3],DataCopy[1][4], DataCopy[2][1],DataCopy[2][2],DataCopy[2][3],DataCopy[2][4], DataCopy[3][1],DataCopy[3][2],DataCopy[3][3],DataCopy[3][4], DataCopy[4][1],DataCopy[4][2],DataCopy[4][3],DataCopy[4][4] = Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4]
+   DataCopy[1][1],DataCopy[1][2],DataCopy[1][3],DataCopy[1][4],
+   DataCopy[2][1],DataCopy[2][2],DataCopy[2][3],DataCopy[2][4],
+   DataCopy[3][1],DataCopy[3][2],DataCopy[3][3],DataCopy[3][4],
+   DataCopy[4][1],DataCopy[4][2],DataCopy[4][3],DataCopy[4][4] =
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4]
 end -- >>>
 
 function isShiftable() -- <<<
@@ -101,23 +108,65 @@ function shiftLeft() -- <<<
 end -- >>>
 
 function shiftRight() -- <<<
-   Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4] = Data[1][4],Data[1][3],Data[1][2],Data[1][1], Data[2][4],Data[2][3],Data[2][2],Data[2][1], Data[3][4],Data[3][3],Data[3][2],Data[3][1], Data[4][4],Data[4][3],Data[4][2],Data[4][1]
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4] =
+   Data[1][4],Data[1][3],Data[1][2],Data[1][1],
+   Data[2][4],Data[2][3],Data[2][2],Data[2][1],
+   Data[3][4],Data[3][3],Data[3][2],Data[3][1],
+   Data[4][4],Data[4][3],Data[4][2],Data[4][1]
    local Changed = shiftLeft()
-   Data[1][4],Data[1][3],Data[1][2],Data[1][1], Data[2][4],Data[2][3],Data[2][2],Data[2][1], Data[3][4],Data[3][3],Data[3][2],Data[3][1], Data[4][4],Data[4][3],Data[4][2],Data[4][1] = Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4]
+   Data[1][4],Data[1][3],Data[1][2],Data[1][1],
+   Data[2][4],Data[2][3],Data[2][2],Data[2][1],
+   Data[3][4],Data[3][3],Data[3][2],Data[3][1],
+   Data[4][4],Data[4][3],Data[4][2],Data[4][1] =
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4]
    return Changed
 end -- >>>
 
 function shiftUp() -- <<<
-   Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4] = Data[1][4],Data[2][4],Data[3][4],Data[4][4], Data[1][3],Data[2][3],Data[3][3],Data[4][3], Data[1][2],Data[2][2],Data[3][2],Data[4][2], Data[1][1],Data[2][1],Data[3][1],Data[4][1]
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4] =
+   Data[1][4],Data[2][4],Data[3][4],Data[4][4],
+   Data[1][3],Data[2][3],Data[3][3],Data[4][3],
+   Data[1][2],Data[2][2],Data[3][2],Data[4][2],
+   Data[1][1],Data[2][1],Data[3][1],Data[4][1]
    local Changed = shiftLeft()
-   Data[1][4],Data[2][4],Data[3][4],Data[4][4], Data[1][3],Data[2][3],Data[3][3],Data[4][3], Data[1][2],Data[2][2],Data[3][2],Data[4][2], Data[1][1],Data[2][1],Data[3][1],Data[4][1] = Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4]
+   Data[1][4],Data[2][4],Data[3][4],Data[4][4],
+   Data[1][3],Data[2][3],Data[3][3],Data[4][3],
+   Data[1][2],Data[2][2],Data[3][2],Data[4][2],
+   Data[1][1],Data[2][1],Data[3][1],Data[4][1] =
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4]
    return Changed
 end -- >>>
 
 function shiftDown() -- <<<
-   Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4] = Data[4][1],Data[3][1],Data[2][1],Data[1][1], Data[4][2],Data[3][2],Data[2][2],Data[1][2], Data[4][3],Data[3][3],Data[2][3],Data[1][3], Data[4][4],Data[3][4],Data[2][4],Data[1][4]
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4] =
+   Data[4][1],Data[3][1],Data[2][1],Data[1][1],
+   Data[4][2],Data[3][2],Data[2][2],Data[1][2],
+   Data[4][3],Data[3][3],Data[2][3],Data[1][3],
+   Data[4][4],Data[3][4],Data[2][4],Data[1][4]
    local Changed = shiftLeft()
-   Data[4][1],Data[3][1],Data[2][1],Data[1][1], Data[4][2],Data[3][2],Data[2][2],Data[1][2], Data[4][3],Data[3][3],Data[2][3],Data[1][3], Data[4][4],Data[3][4],Data[2][4],Data[1][4] = Data[1][1],Data[1][2],Data[1][3],Data[1][4], Data[2][1],Data[2][2],Data[2][3],Data[2][4], Data[3][1],Data[3][2],Data[3][3],Data[3][4], Data[4][1],Data[4][2],Data[4][3],Data[4][4]
+   Data[4][1],Data[3][1],Data[2][1],Data[1][1],
+   Data[4][2],Data[3][2],Data[2][2],Data[1][2],
+   Data[4][3],Data[3][3],Data[2][3],Data[1][3],
+   Data[4][4],Data[3][4],Data[2][4],Data[1][4] =
+   Data[1][1],Data[1][2],Data[1][3],Data[1][4],
+   Data[2][1],Data[2][2],Data[2][3],Data[2][4],
+   Data[3][1],Data[3][2],Data[3][3],Data[3][4],
+   Data[4][1],Data[4][2],Data[4][3],Data[4][4]
    return Changed
 end -- >>>
 
@@ -223,9 +272,9 @@ function love.load() -- <<<
       {love.math.colorFromBytes(224, 37 , 78 )}, -- #E0254E 2   
       {love.math.colorFromBytes(84 , 104, 48 )}, -- #546830 4   
       {love.math.colorFromBytes(251, 182, 74 )}, -- #FBB64A 8   
-      {love.math.colorFromBytes(213, 88 , 31 )}, -- #D5581F 16  
-      {love.math.colorFromBytes(120, 84 , 176)}, -- #7854B0 32 
-      {love.math.colorFromBytes(63 , 146, 139)}, -- #3F928B 64
+      {love.math.colorFromBytes(120, 84 , 176)}, -- #7854B0 16 
+      {love.math.colorFromBytes(63 , 146, 139)}, -- #3F928B 32
+      {love.math.colorFromBytes(213, 88 , 31 )}, -- #D5581F 64
       {love.math.colorFromBytes(162, 152, 16 )}, -- #A29810 128
       {love.math.colorFromBytes(136, 42 , 69 )}, -- #882A45 256
       {love.math.colorFromBytes(73 , 86 , 141)}, -- #49568D 512
